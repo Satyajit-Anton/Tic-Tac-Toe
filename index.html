@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<htmL>
+<head>Tic Tac Toe</head>
+<body>
+ <div id="board"></div>
+<style>
+body{
+    background-color: aqua;
+    text-align: center;
+}
+#board{
+    width: 450px;
+    height: 450px;
+    background-color: white;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.tile{
+    width: 147px;
+    height: 147px;
+    font-size: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.horizontal {
+  border-bottom: 3px solid black;
+}
+.vertical {
+  border-right: 3px solid black;
+}
+.winner{
+    background-color: lightblue;
+    color: red;
+}
+</style>
+
+<script>
+var board;
+var playerx='X';
+var playero='O';
+var currentplayer=playero;
+var gameover=false;
+window.onload=function(){
+    setgame();
+}
+function setgame(){
+    board=[
+        ['','',''],
+        ['','',''],
+        ['','','']
+    ]
+    for (let r=0;r<3;r++){
+        for(let c=0;c<3;c++){
+            //create a <div> tag here
+            let tile=document.createElement('div');
+            //here we are to creating id like from r to 1 and from c to 1 like 1-1;
+            tile.id=r.toString()+"-"+c.toString();
+            //here we just add class for the horizontal or vertical line
+            tile.classList.add('tile');
+            //here we just provide condition to chk wheater it is or not
+            if(r==0 || r==1){
+                tile.classList.add("horizontal");
+            }
+            if(c==0 || c==1){
+                tile.classList.add("vertical");
+            }
+            tile.addEventListener('click',clickgame)
+            document.getElementById("board").append(tile);
+        }
+    }
+}
+
+function clickgame() {
+      if (gameover) {
+        return;
+      }
+      let cord = this.id.split("-");
+      let r = parseInt(cord[0]);
+      let c = parseInt(cord[1]);
+      if (board[r][c] !== '') {
+        return;
+      }
+      board[r][c] = currentplayer;
+      this.innerText = currentplayer;
+      if (currentplayer == playero) {
+        currentplayer = playerx;
+      } else {
+        currentplayer = playero;
+      }
+      winner();
+    }
+
+        function winner(){
+            //horiezontal
+            for(let r=0;r<3;r++){
+                if(board[r][0]==board[r][1] && board[r][1]==board[r][2] && board[r][0]!='')
+                {
+                for(let i=0;i<3;i++){
+                    let tile=document.getElementById(r.toString()+"-"+i.toString());
+                    tile.classList.add("winner");
+                }
+                gameover=true;
+                return;
+            }
+         }
+
+        //vertical
+        for(let c=0;c<3;c++){
+            if(board[0][c]==board[1][c] && board[1][c]==board[2][c] && board[0][c]!==''){
+                for(i=0;i<3;i++){
+                    let tile=document.getElementById(i.toString()+"-"+c.toString());
+                    tile.classList.add("winner");
+                }
+                gameover=true;
+                return;
+            }
+        }
+        //digonal
+        if(board[0][0]==board[1][1] && board[1][1]==board[2][2] && board[0][0]!=''){
+            for(i=0;i<3;i++){
+                    let tile=document.getElementById(i.toString()+"-"+i.toString());
+                    tile.classList.add("winner");
+                }
+                gameover=true;
+                return;
+        }
+        //anti-digonal
+        if(board[0][2]==board[1][1] && board[1][1]==board[2][0] && board[0][2]!=''){
+            tile=document.getElementById("0-2");
+            tile.classList.add("winner");
+
+            tile=document.getElementById("1-1");
+            tile.classList.add("winner");
+
+            tile=document.getElementById("2-0");
+            tile.classList.add("winner");
+
+            gameover=true;
+            return;
+        }
+        }
+</script>
+</body>
+</htmL>
